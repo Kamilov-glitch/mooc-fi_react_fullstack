@@ -1,0 +1,7 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/spa
+note over server
+server adds post value to dom
+prevents further get request
+adds note to json file
+end note 
+server-->browser: status code 201 -element created
