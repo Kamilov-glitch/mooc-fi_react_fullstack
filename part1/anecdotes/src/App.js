@@ -12,15 +12,29 @@ function App() {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [randInt, setRandInt] = useState(0);
+
   const handleSelect = () => {
-    const randInt = Math.floor(Math.random() * 7);
+    setRandInt(Math.floor(Math.random() * 7));
     setSelected(randInt);
+  }
+
+  const handleVote = () => {
+    const copy = [...votes];
+    copy[selected] = copy[selected] + 1;
+    setVotes(copy);
+
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
-      <br></br>
+      <br/>
+      <p>has {votes[selected]} votes</p>
+      <br/>
+      <button onClick={handleVote}>vote</button>
       <button onClick={handleSelect}>next anecdote</button>
     </div>
   );
