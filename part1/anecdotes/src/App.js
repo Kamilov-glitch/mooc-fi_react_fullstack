@@ -24,7 +24,6 @@ function App() {
     const copy = [...votes];
     copy[selected] = copy[selected] + 1;
     setVotes(copy);
-
   }
 
   return (
