@@ -30,11 +30,14 @@ function App() {
     <div>
       <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
+
       <br/>
       <p>has {votes[selected]} votes</p>
       <br/>
+      
       <button onClick={handleVote}>vote</button>
       <button onClick={handleSelect}>next anecdote</button>
+      
       <h1>Anecdote with the most votes</h1>
       {anecdotes[votes.indexOf(Math.max(...votes))]}
     </div>
