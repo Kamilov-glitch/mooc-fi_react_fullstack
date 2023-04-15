@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import personsService from './services/persons';
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -11,10 +11,10 @@ const App = () => {
   const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then( response => {
-      setPersons(response.data);
+    personsService
+    .getAll()
+    .then( allPersons => {
+      setPersons(allPersons);
     })
   }, [])
 
@@ -32,13 +32,38 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if (persons.find(person => person.name === newName)) {
-      return alert(`${newName} is already added to phonebook`)
+    const person = persons.find(person => person.name === newName)
+    if (person) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)) {
+        const id = person.id
+        personsService.update(person.id, newNumber)
+        .then(patchedPerson => {
+          setPersons(persons.map(person => person.id !== id ? person : patchedPerson));
+        })
+      }
     }
-    const newNameObject = { name: newName, number: newNumber }
-    setPersons(persons.concat(newNameObject))
-    setNewName('')
-    setNewNumber('')
+    else {
+      const newNameObject = { name: newName, number: newNumber }
+      personsService
+        .create(newNameObject)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+    }
+  }
+
+  const removePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}`)) {
+      personsService
+      .remove(id)
+      .then(response => {
+        if (response) {
+          setPersons(persons.filter(person => person.id !== id))
+        }
+      })
+    }
   }
 
   return (
@@ -47,9 +72,9 @@ const App = () => {
       <Filter value={searchValue} handler={searchInputHandler} />
       <h3>Add a new</h3>
       <PersonForm addName={addName} nameInputHandler={nameInputHandler} newNumber={newNumber}
-        numberInputHandler={numberInputHandler} />
+        numberInputHandler={numberInputHandler} newName={newName} />
       <h3>Numbers</h3>
-      <Persons persons={persons} searchValue={searchValue} />
+      <Persons persons={persons} searchValue={searchValue} removePerson={removePerson}/>
     </div>
   )
 }

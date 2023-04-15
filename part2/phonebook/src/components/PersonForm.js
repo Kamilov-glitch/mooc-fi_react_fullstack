@@ -10,13 +10,13 @@ const PersonForm  = (props) => {
     return (
         <form onSubmit={addName}>
             <div>
-            name: <input value={newName} onChange={nameInputHandler} />
+                name: <input value={newName} onChange={nameInputHandler} />
             </div>
             <div>
-            number: <input value={newNumber} onChange={numberInputHandler} />
+                number: <input value={newNumber} onChange={numberInputHandler} />
             </div>
             <div>
-            <button type="submit">add</button>
+                <button type="submit">add</button>
             </div>
       </form>
     )
