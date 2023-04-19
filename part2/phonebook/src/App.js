@@ -3,12 +3,15 @@ import personsService from './services/persons';
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchValue, setSearchValue] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [notificationType, setNotificationType] = useState(null)
 
   useEffect(() => {
     personsService
@@ -40,6 +43,14 @@ const App = () => {
         .then(patchedPerson => {
           setPersons(persons.map(person => person.id !== id ? person : patchedPerson));
         })
+        .catch(error => {
+          setNotificationMessage(`${person.name} was removed from server`)
+          setNotificationType(prevState => 'error')
+          setTimeout(() => {
+            setNotificationMessage(null)
+            setNotificationType(null)
+          }, 5000)
+        })
       }
     }
     else {
@@ -48,6 +59,12 @@ const App = () => {
         .create(newNameObject)
         .then(newPerson => {
           setPersons(persons.concat(newPerson))
+          setNotificationMessage(`Added ${newPerson.name} successfully!`)
+          setNotificationType('success')
+          setTimeout(() => {
+            setNotificationMessage(null)
+            setNotificationType(null)
+          }, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -69,6 +86,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} type={notificationType}/>
       <Filter value={searchValue} handler={searchInputHandler} />
       <h3>Add a new</h3>
       <PersonForm addName={addName} nameInputHandler={nameInputHandler} newNumber={newNumber}
