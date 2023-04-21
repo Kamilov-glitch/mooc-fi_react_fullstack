@@ -17,16 +17,13 @@ const App = () => {
       axios
       .get(baseUrl)
       .then(response => {
-        console.log('response', response)
         setAllCountries(response.data)
-        console.log('allCountries', allCountries)
       })
   },[])
 
   useEffect(() => {
     const filteredCountries = allCountries
         .filter(country => country.name.common.toLowerCase().includes(searchText.toLowerCase()))
-      console.log('filtered', filteredCountries)
     setCountries(filteredCountries)
   }, [searchText])
 
