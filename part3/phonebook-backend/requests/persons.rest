@@ -1,0 +1,20 @@
+DELETE http://localhost:3001/api/persons/3
+
+###
+
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{ 
+    "name": "Amerigo Vespucci", 
+    "number": "39-23-6423122-867-9877976"
+}
+
+###
+
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{ 
+    "name": "Amerigo Vespucci"
+}
