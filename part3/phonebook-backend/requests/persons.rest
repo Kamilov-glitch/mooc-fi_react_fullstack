@@ -1,4 +1,4 @@
-DELETE http://localhost:3001/api/persons/3
+DELETE http://localhost:3001/api/persons/32
 
 ###
 
@@ -16,5 +16,5 @@ POST http://localhost:3001/api/persons
 content-type: application/json
 
 { 
-    "name": "Amerigo Vespucci"
+    "name": "Amerigo Vespucciler"
 }
